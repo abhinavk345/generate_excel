@@ -2,6 +2,7 @@ package com.abhi.ExcelReportGenerator.service;
 
 import com.abhi.ExcelReportGenerator.entity.Address;
 import com.abhi.ExcelReportGenerator.repository.AddressRepository;
+import com.abhi.ExcelReportGenerator.utility.ExcelUtility;
 import jakarta.persistence.Column;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,6 +13,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -52,6 +54,13 @@ public class AddressService {
         workbook.close();
         outputStream.close();
 
+
+    }
+
+    public ByteArrayInputStream getReport() throws IOException {
+        List<Address> addressList = addressRepository.findAll();
+        ByteArrayInputStream data=ExcelUtility.dataToExcel(addressList);
+        return  data;
 
     }
 }
